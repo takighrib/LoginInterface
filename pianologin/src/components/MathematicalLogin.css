@@ -15,6 +15,7 @@
   width: 100%;
   padding: 35px;
   animation: slideUp 0.5s ease;
+  color: black; /* Texte général en noir */
 }
 
 .mathematical-login-header {
@@ -60,6 +61,7 @@
   gap: 4px;
   transition: all 0.3s;
   background: white;
+  color: black; /* texte en noir */
 }
 
 .math-box span {
@@ -122,6 +124,7 @@
   border-radius: 10px;
   padding: 15px;
   margin: 20px 0;
+  color: black; /* texte noir */
 }
 
 .recap-mini .recap-item {
@@ -135,12 +138,12 @@
 }
 
 .recap-mini small {
-  color: #666;
+  color: #333;
   font-weight: 600;
 }
 
 .recap-mini strong {
-  color: #667eea;
+  color: black;
   font-family: 'Courier New', monospace;
   font-size: 14px;
 }
@@ -204,7 +207,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: black; /* texte noir */
   font-size: 18px;
   font-weight: bold;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
@@ -252,8 +255,14 @@
 
 .number-input-group .form-input {
   flex: 1;
+  color: black; /* texte noir */
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
 }
 
+/* Boutons */
 .btn-add {
   width: 50px;
   height: 50px;
@@ -276,7 +285,6 @@
   cursor: not-allowed;
 }
 
-/* Boutons */
 .btn-primary {
   width: 100%;
   padding: 15px;

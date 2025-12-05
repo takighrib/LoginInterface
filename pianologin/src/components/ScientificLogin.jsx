@@ -206,7 +206,7 @@ const ScientificLogin = ({ email, onSuccess }) => {
                   Taille (cm) <span className="required">*</span>
                 </label>
                 <input
-                  type="number"
+                  type="password"
                   id="height"
                   name="height"
                   value={scientificData.height}
@@ -225,7 +225,7 @@ const ScientificLogin = ({ email, onSuccess }) => {
                   Poids (kg) <span className="required">*</span>
                 </label>
                 <input
-                  type="number"
+                  type="password"
                   id="weight"
                   name="weight"
                   value={scientificData.weight}
@@ -245,7 +245,7 @@ const ScientificLogin = ({ email, onSuccess }) => {
                 Formule chimique <span className="required">*</span>
               </label>
               <input
-                type="text"
+                type="password"
                 id="chemicalFormula"
                 name="chemicalFormula"
                 value={scientificData.chemicalFormula}

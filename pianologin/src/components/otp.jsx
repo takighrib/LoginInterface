@@ -12,7 +12,7 @@ const OTPLogin = ({ email, onSuccess }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/verify-melody-otp", {
+      const res = await axios.post("http://localhost:5000/api/auth/verify-otp", {
         email,
         otp,
       });
@@ -40,8 +40,8 @@ const OTPLogin = ({ email, onSuccess }) => {
         onChange={(e) => setOtp(e.target.value)}
         placeholder="Entrez votre code OTP"
         maxLength={6}
-        className="email-input" // tu peux réutiliser la même classe pour le style
-        autoFocus
+        className="email-input" 
+        style={{ color: "black" }}
         required
       />
     </div>

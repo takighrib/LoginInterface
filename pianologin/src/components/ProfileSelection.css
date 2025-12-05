@@ -368,6 +368,15 @@
   overflow: hidden;
   animation: slideUp 0.9s ease;
 }
+.login-link {
+  color: white;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+  background: none;
+  border: none;
+  padding: 0;
+}
 
 .btn-continue::before {
   content: '';

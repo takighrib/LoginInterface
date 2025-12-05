@@ -185,6 +185,9 @@ export function hasMelody(email) {
 export function getCurrentUser() {
   return localStorage.getItem(CURRENT_USER_KEY)
 }
+export function setCurrentUser(email) {
+  localStorage.setItem(CURRENT_USER_KEY, email)
+}
 
 export function logout() {
   localStorage.removeItem(CURRENT_USER_KEY)

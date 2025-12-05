@@ -150,7 +150,7 @@ const ProfileSelection = () => {
           )}
           
           <button 
-            className="btn-login-link"
+            className="login-link"
             onClick={handleGoToLogin}
           >
             Déjà un compte ? Se connecter
