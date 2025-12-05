@@ -1,0 +1,158 @@
+/* OTPLogin.css */
+
+.otp-login {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px 25px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.otp-login h2 {
+  margin: 0 0 25px 0;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.otp-login .form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.otp-login label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.otp-login .email-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.otp-login .email-input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.otp-login .email-input::placeholder {
+  color: #999;
+}
+
+.otp-login .btn-primary {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.otp-login .btn-primary:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 86, 179, 0.25);
+}
+
+.otp-login .btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.otp-login .btn-primary:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.otp-login p {
+  margin: 15px 0 0 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.otp-login .error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.otp-login .success-message {
+  color: #28a745;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.otp-login .resend-otp {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+}
+
+.otp-login .resend-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  text-decoration: underline;
+}
+
+.otp-login .resend-btn:hover {
+  color: #0056b3;
+}
+
+.otp-login .resend-btn:disabled {
+  color: #6c757d;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .otp-login {
+    margin: 20px auto;
+    padding: 20px 15px;
+    border-radius: 8px;
+  }
+  
+  .otp-login h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+  
+  .otp-login .email-input,
+  .otp-login .btn-primary {
+    padding: 10px 12px;
+  }
+}

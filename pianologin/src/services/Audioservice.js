@@ -1,71 +1,43 @@
-// Fréquences des notes (octave 4)
-const noteFrequencies = {
-  'C': 261.63,
-  'C#': 277.18,
-  'D': 293.66,
-  'D#': 311.13,
-  'E': 329.63,
-  'F': 349.23,
-  'F#': 369.99,
-  'G': 392.00,
-  'G#': 415.30,
-  'A': 440.00,
-  'A#': 466.16,
-  'B': 493.88,
+const noteSettings = {
+  'C':  { freq: [261.63, 329.63, 392.00,261.63,500], type: 'sine',    attack: 0.01, sustain: 0.2 }, // Piano "la la la"
+  'C#': { freq: [500, 500, 500],          type: 'square',  attack: 0.005, sustain: 0.3 }, // Guitare "be be be"
+  'D':  { freq: [150, 150, 150,150, 150, 150],          type: 'triangle',attack: 0.1, sustain: 0.4 }, // Tambour "boom boom"
+  'D#': { freq: [523.25, 587.33],         type: 'sawtooth',attack: 0.02, sustain: 0.25 }, // Xylophone "ting ting"
+  'E':  { freq: [659.25,659.25,659.25],                 type: 'triangle',attack: 0.01, sustain: 0.2 }, // Cloche "ding"
+  'F':  { freq: [349.23, 392.00,349.23],         type: 'sine',    attack: 0.01, sustain: 0.3 }, // Synthé "ta ta"
+  'G':  { freq: [392, 392, 440,392, 392, 440,392, 392, 440],          type: 'triangle',attack: 0.02, sustain: 0.2 }, // Shaker "sh sh"
+  'G#': { freq: [523.25, 587.33, 659.25], type: 'sine',    attack: 0.005, sustain: 0.3 }, // Harpe "ha ha"
+  'A':  { freq: [880],                     type: 'triangle',attack: 0.01, sustain: 0.2 }, // Flûte "pi"
+  'A#': { freq: [698.46, 739.99],         type: 'square',  attack: 0.01, sustain: 0.25 }, // Bongo "bo bo"
+  'B':  { freq: [987.77, 1046.50],        type: 'sawtooth',attack: 0.01, sustain: 0.2 }, // Triangle "ting ting"
 }
 
-/**
- * Joue une note en utilisant l'API Web Audio
- */
-export const playNote = (note, duration = 0.3) => {
-  try {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)()
-    const frequency = noteFrequencies[note]
-    
-    if (!frequency) {
-      console.error(`Note inconnue: ${note}`)
-      return
-    }
+export const playNote = async (note, duration = 0.3) => {
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+  const settings = noteSettings[note]
 
-    // Oscillateur pour générer le son
+  if (!settings) {
+    console.error(`Note inconnue: ${note}`)
+    return
+  }
+
+  const gainNode = audioContext.createGain()
+  gainNode.connect(audioContext.destination)
+
+  for (let i = 0; i < settings.freq.length; i++) {
     const oscillator = audioContext.createOscillator()
-    const gainNode = audioContext.createGain()
-    
     oscillator.connect(gainNode)
-    gainNode.connect(audioContext.destination)
-    
-    // Type de forme d'onde (sine = son doux comme un piano)
-    oscillator.type = 'sine'
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime)
-    
-    // Envelope ADSR pour un son plus naturel
+    oscillator.type = settings.type
+    oscillator.frequency.setValueAtTime(settings.freq[i], audioContext.currentTime)
+
     const now = audioContext.currentTime
     gainNode.gain.setValueAtTime(0, now)
-    gainNode.gain.linearRampToValueAtTime(0.3, now + 0.01) // Attack
-    gainNode.gain.linearRampToValueAtTime(0.2, now + 0.1)  // Decay
-    gainNode.gain.setValueAtTime(0.2, now + duration - 0.1) // Sustain
-    gainNode.gain.linearRampToValueAtTime(0, now + duration) // Release
-    
-    oscillator.start(now)
-    oscillator.stop(now + duration)
-    
-    // Nettoyer après utilisation
-    setTimeout(() => {
-      oscillator.disconnect()
-      gainNode.disconnect()
-    }, duration * 1000 + 100)
-    
-  } catch (error) {
-    console.error('Erreur lors de la lecture de la note:', error)
-  }
-}
+    gainNode.gain.linearRampToValueAtTime(0.3, now + settings.attack)
+    gainNode.gain.linearRampToValueAtTime(0, now + duration / settings.freq.length)
 
-/**
- * Joue une mélodie complète
- */
-export const playMelody = async (notes, tempo = 500) => {
-  for (let i = 0; i < notes.length; i++) {
-    playNote(notes[i])
-    await new Promise(resolve => setTimeout(resolve, tempo))
+    oscillator.start(now)
+    oscillator.stop(now + duration / settings.freq.length)
+
+    await new Promise(resolve => setTimeout(resolve, (duration / settings.freq.length) * 1000))
   }
 }

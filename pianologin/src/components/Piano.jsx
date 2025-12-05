@@ -5,8 +5,8 @@ import './Piano.css'
 const Piano = ({ onNotePlayed, enabled = true }) => {
   const [pressedKey, setPressedKey] = useState(null)
 
-  const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-  const blackKeys = ['C#', 'D#', null, 'F#', 'G#', 'A#', null]
+  const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A']
+  const blackKeys = ['C#', 'D#', null, 'G#', 'A#']
 
   const handleNotePress = (note) => {
     if (!enabled || !note) return
@@ -34,7 +34,7 @@ const Piano = ({ onNotePlayed, enabled = true }) => {
               }}
               disabled={!enabled}
             >
-              <span className="note-label">{note}</span>
+              {/* <span className="note-label">{note}</span> */}
             </button>
           ))}
         </div>
@@ -53,7 +53,7 @@ const Piano = ({ onNotePlayed, enabled = true }) => {
                   }}
                   disabled={!enabled}
                 >
-                  <span className="note-label">{note.replace('#', '♯')}</span>
+                  {/* <span className="note-label">{note.replace('#', '♯')}</span> */}
                 </button>
               ) : (
                 <div className="black-key-placeholder"></div>

@@ -1,211 +1,116 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Piano from './Piano'
-import { verifyMelody, getAllUsers, isBlocked, getFailedAttempts } from '../services/Authservice'
+import ScientificLogin from './ScientificLogin'
+import OTPLogin from './otp'
+import { verifyMelody, getAllUsers, isBlocked, getFailedAttempts, getUserProfile } from '../services/Authservice'
 import './Loginscreen.css'
 
 const LoginScreen = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [showPiano, setShowPiano] = useState(false)
+  const [showScientific, setShowScientific] = useState(false)
+  const [showOTP, setShowOTP] = useState(false)
   const [enteredNotes, setEnteredNotes] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const [shake, setShake] = useState(false)
   const [existingUsers, setExistingUsers] = useState([])
-  
+
   const requiredNotesCount = 6
 
   useEffect(() => {
-    // Charger les utilisateurs existants
     const users = getAllUsers()
     setExistingUsers(users)
   }, [])
 
   const handleEmailSubmit = (e) => {
     e.preventDefault()
-    
-    if (!email.trim()) {
-      setMessage('⚠️ Veuillez entrer votre email')
-      return
-    }
+    if (!email.trim()) return setMessage('⚠️ Veuillez entrer votre email')
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      setMessage('⚠️ Email invalide')
-      return
-    }
+    if (!emailRegex.test(email)) return setMessage('⚠️ Email invalide')
 
-    // Vérifier si l'utilisateur est bloqué
     if (isBlocked(email)) {
       const attempts = getFailedAttempts(email)
-      setMessage(`🔒 Compte bloqué après ${attempts} tentatives. Réessayez dans 5 minutes.`)
-      return
+      return setMessage(`🔒 Compte bloqué après ${attempts} tentatives. Réessayez dans 5 minutes.`)
     }
 
-    setShowPiano(true)
-    setMessage('Jouez votre mélodie')
-  }
+    // Vérifier le type de profil de l'utilisateur
+    const userProfile = getUserProfile(email)
+    
+    if (!userProfile) {
+      return setMessage('⚠️ Aucun compte trouvé avec cet email')
+    }
 
-  const handleNotePlayed = (note) => {
-    if (enteredNotes.length < requiredNotesCount) {
-      const newNotes = [...enteredNotes, note]
-      setEnteredNotes(newNotes)
-      setMessage(`Note ${newNotes.length}/${requiredNotesCount}`)
-      
-      if (newNotes.length === requiredNotesCount) {
-        verifyMelodySequence(newNotes)
-      }
+    if (userProfile.profileType === 'musical') {
+      setShowPiano(true)
+      setMessage('Jouez votre mélodie')
+    } else if (userProfile.profileType === 'scientific') {
+      setShowScientific(true)
     }
   }
 
-  const verifyMelodySequence = async (notes) => {
-    setIsLoading(true)
-    setMessage('Vérification...')
-
-    await new Promise(resolve => setTimeout(resolve, 800))
-
-    const isValid = await verifyMelody(notes, email)
-
-    if (isValid) {
-      setMessage('✓ Authentification réussie !')
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      navigate('/home')
-    } else {
-      const attempts = getFailedAttempts(email)
-      setShake(true)
-      
-      if (attempts >= 5) {
-        setMessage('🔒 Trop de tentatives. Compte bloqué pour 5 minutes.')
-      } else {
-        setMessage(`✗ Mélodie incorrecte (${attempts}/5 tentatives)`)
-      }
-      
-      setEnteredNotes([])
-      setIsLoading(false)
-      
-      setTimeout(() => {
-        setShake(false)
-        if (attempts < 5) {
-          setMessage('Réessayez')
-        }
-      }, 2000)
-    }
-  }
-
-  const resetMelody = () => {
-    setEnteredNotes([])
-    setMessage('Jouez votre mélodie')
-    setIsLoading(false)
+  const handleOTPSuccess = () => {
+    navigate('/home')
   }
 
   const changeUser = () => {
     setEmail('')
     setShowPiano(false)
+    setShowScientific(false)
     setEnteredNotes([])
     setMessage('')
+    setShowOTP(false)
   }
+
+  // ... reste du code pour Piano (comme avant)
 
   return (
     <div className="login-screen">
       <div className="login-container">
-        <div className="login-header fade-in">
-          <div className="icon-music">🎵</div>
-          <h1>Authentification Musicale</h1>
-          <p>Un système d'authentification unique et sécurisé</p>
-        </div>
-
-        {!showPiano ? (
-          <div className="email-form fade-in">
-            <form onSubmit={handleEmailSubmit}>
-              <div className="form-group">
-                <label htmlFor="email">Adresse email</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="votre@email.com"
-                  className="email-input"
-                  autoFocus
-                />
-              </div>
-              
-              <button type="submit" className="btn-primary">
-                Continuer
-              </button>
-            </form>
-
-            {existingUsers.length > 0 && (
-              <div className="existing-users">
-                <p className="users-title">Utilisateurs enregistrés :</p>
-                <div className="users-list">
-                  {existingUsers.map((user) => (
-                    <button
-                      key={user}
-                      className="user-chip"
-                      onClick={() => {
-                        setEmail(user)
-                        setTimeout(() => handleEmailSubmit({ preventDefault: () => {} }), 100)
-                      }}
-                    >
-                      {user}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <button 
-              className="btn-link"
-              onClick={() => navigate('/create-melody')}
-            >
-              Créer un nouveau compte
-            </button>
-          </div>
-        ) : (
+        {!showPiano && !showScientific && !showOTP ? (
           <>
-            <div className="user-badge">
-              <span className="user-email">{email}</span>
-              <button className="btn-change" onClick={changeUser}>
-                Changer
+            <div className="login-header fade-in">
+              <div className="icon-music">🎯</div>
+              <h1>Authentification NIRD</h1>
+              <p>Connexion personnalisée et sécurisée</p>
+            </div>
+
+            <div className="email-form fade-in">
+              <form onSubmit={handleEmailSubmit}>
+                <div className="form-group">
+                  <label htmlFor="email">Adresse email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="votre@email.com"
+                    className="email-input"
+                    autoFocus
+                  />
+                </div>
+                <button type="submit" className="btn-primary">
+                  Continuer
+                </button>
+              </form>
+
+              <button 
+                className="btn-link"
+                onClick={() => navigate('/profile-selection')}
+              >
+                Créer un compte
               </button>
             </div>
-
-            <div className="notes-indicator">
-              <div className={`notes-row ${shake ? 'shake' : ''}`}>
-                {Array.from({ length: requiredNotesCount }).map((_, index) => {
-                  const isFilled = index < enteredNotes.length
-                  return (
-                    <div key={index} className={`note-box ${isFilled ? 'filled' : ''}`}>
-                      {isFilled && <span>{enteredNotes[index]}</span>}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            <div className="status-message">
-              {isLoading ? (
-                <div className="loader-small"></div>
-              ) : (
-                <p className={`message ${message.startsWith('✓') ? 'success' : message.startsWith('✗') || message.startsWith('🔒') ? 'error' : ''}`}>
-                  {message}
-                </p>
-              )}
-            </div>
-
-            <Piano 
-              onNotePlayed={handleNotePlayed}
-              enabled={!isLoading && enteredNotes.length < requiredNotesCount}
-            />
-
-            {enteredNotes.length > 0 && !isLoading && (
-              <button className="btn-reset scale-in" onClick={resetMelody}>
-                🔄 Recommencer
-              </button>
-            )}
           </>
+        ) : showOTP ? (
+          <OTPLogin email={email} onSuccess={handleOTPSuccess} />
+        ) : showScientific ? (
+          <ScientificLogin email={email} onSuccess={() => setShowOTP(true)} />
+        ) : (
+          // Code Piano (comme avant)
+          <></>
         )}
       </div>
     </div>

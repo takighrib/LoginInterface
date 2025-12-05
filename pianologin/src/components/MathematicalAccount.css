@@ -1,0 +1,476 @@
+.create-mathematical-screen {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.mathematical-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  padding: 40px;
+  animation: slideUp 0.5s ease;
+}
+
+.mathematical-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.mathematical-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: bounce 2s infinite;
+}
+
+.mathematical-header h1 {
+  color: #333;
+  margin: 10px 0;
+  font-size: 28px;
+}
+
+.mathematical-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+.btn-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  border: none;
+  color: #667eea;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: all 0.3s;
+}
+
+.btn-back:hover {
+  color: #764ba2;
+  transform: translateX(-5px);
+}
+
+/* Étapes */
+.steps-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #999;
+  transition: all 0.3s;
+}
+
+.step.active .step-circle {
+  background: #667eea;
+  color: white;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+}
+
+.step.completed .step-circle {
+  background: #4caf50;
+  color: white;
+}
+
+.step-line {
+  width: 80px;
+  height: 3px;
+  background: #e0e0e0;
+  margin: 0 10px;
+}
+
+.step span {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Contenu des étapes */
+.step-content {
+  margin-top: 20px;
+}
+
+.instructions {
+  background: #f5f7ff;
+  border-left: 4px solid #667eea;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.instructions h3 {
+  margin: 0 0 15px 0;
+  color: #667eea;
+  font-size: 18px;
+}
+
+.instructions ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.instructions li {
+  margin: 8px 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Séquence de nombres */
+.sequence-display {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+  min-height: 60px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 12px;
+}
+
+.sequence-number {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  animation: scaleIn 0.3s ease;
+}
+
+.sequence-number .btn-remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: all 0.3s;
+}
+
+.sequence-number .btn-remove:hover {
+  transform: scale(1.1);
+  background: #d32f2f;
+}
+
+.sequence-empty {
+  width: 60px;
+  height: 60px;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 14px;
+}
+
+/* Input de nombre */
+.number-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.number-input-group .form-input {
+  flex: 1;
+}
+
+.btn-add {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: #667eea;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-add:hover:not(:disabled) {
+  background: #5568d3;
+  transform: scale(1.05);
+}
+
+.btn-add:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Récapitulatif */
+.recap-box {
+  background: #f5f7ff;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.recap-box h4 {
+  margin: 0 0 15px 0;
+  color: #667eea;
+  text-align: center;
+}
+
+.recap-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.recap-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.recap-value {
+  color: #333;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+/* Formulaires */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 600;
+}
+
+.required {
+  color: #f44336;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.math-input {
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.result-input {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #667eea;
+}
+
+.field-hint {
+  font-size: 14px;
+  color: #999;
+  margin-top: 6px;
+}
+
+/* Messages */
+.form-message {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 15px 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+.form-message.error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef5350;
+}
+
+.form-message.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #66bb6a;
+}
+
+/* Boutons */
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-link {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  color: #667eea;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: all 0.3s;
+}
+
+.btn-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.btn-change {
+  padding: 6px 12px;
+  background: #f5f7ff;
+  color: #667eea;
+  border: 1px solid #667eea;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-change:hover {
+  background: #667eea;
+  color: white;
+}
+
+/* User badge */
+.user-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f5f7ff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.user-email {
+  color: #667eea;
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.fade-in {
+  animation: slideUp 0.5s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mathematical-container {
+    padding: 25px;
+  }
+
+  .mathematical-icon {
+    font-size: 60px;
+  }
+
+  .mathematical-header h1 {
+    font-size: 24px;
+  }
+
+  .step-line {
+    width: 40px;
+  }
+
+  .sequence-number {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+}

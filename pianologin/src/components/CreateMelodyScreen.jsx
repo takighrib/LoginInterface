@@ -199,7 +199,7 @@ const CreateMelodyScreen = () => {
                   const isFilled = index < currentMelody.length
                   return (
                     <div key={index} className={`note-box ${isFilled ? 'filled' : ''}`}>
-                      {isFilled && <span>{currentMelody[index]}</span>}
+                      {isFilled && <span>★</span>}
                     </div>
                   )
                 })}

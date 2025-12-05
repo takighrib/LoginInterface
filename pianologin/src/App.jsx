@@ -1,23 +1,27 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+
 import SplashScreen from './components/SplashScreen'
 import LoginScreen from './components/LoginScreen'
 import CreateMelodyScreen from './components/CreateMelodyScreen'
+import CreateScientificAccount from './components/CreateScientificAccount'
+import CreateMathematicalAccount from './components/CreateMathematicalAccount'
 import HomeScreen from './components/HomeScreen'
-import { hasMelody } from './services/Authservice'
+import PianoScreen from './components/Piano'
+import ScientificLogin from './components/ScientificLogin'
+import MathematicalLogin from './components/MathematicalLogin'
+import OTPLogin from './components/otp'
+import ProfileSelection from './components/ProfileSelection'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
-  const [hasStoredMelody, setHasStoredMelody] = useState(false)
 
   useEffect(() => {
-    const checkMelody = async () => {
-      await new Promise(resolve => setTimeout(resolve, 2000)) // Splash screen
-      const exists = hasMelody()
-      setHasStoredMelody(exists)
+    const timer = setTimeout(() => {
       setIsLoading(false)
-    }
-    checkMelody()
+    }, 2000) // Splash screen pendant 2 secondes
+    
+    return () => clearTimeout(timer)
   }, [])
 
   if (isLoading) {
@@ -27,18 +31,31 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route 
-          path="/" 
-          element={
-            hasStoredMelody ? 
-              <Navigate to="/login" replace /> : 
-              <Navigate to="/create-melody" replace />
-          } 
-        />
+        {/* Redirection par défaut vers la sélection de profil */}
+        <Route path="/" element={<Navigate to="/profile-selection" replace />} />
+
+        {/* Sélection de profil (première page) */}
+        <Route path="/profile-selection" element={<ProfileSelection />} />
+
+        {/* Page de connexion */}
         <Route path="/login" element={<LoginScreen />} />
+
+        {/* Création de comptes selon le profil */}
         <Route path="/create-melody" element={<CreateMelodyScreen />} />
+        <Route path="/create-scientific" element={<CreateScientificAccount />} />
+        <Route path="/create-mathematical" element={<CreateMathematicalAccount />} />
+
+        {/* Page d'accueil après connexion */}
         <Route path="/home" element={<HomeScreen />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+
+        {/* Composants de login spécifiques */}
+        <Route path="/piano" element={<PianoScreen />} />
+        <Route path="/scientific-login" element={<ScientificLogin />} />
+        <Route path="/mathematical-login" element={<MathematicalLogin />} />
+        <Route path="/otp" element={<OTPLogin />} />
+
+        {/* Redirection 404 */}
+        <Route path="*" element={<Navigate to="/profile-selection" replace />} />
       </Routes>
     </Router>
   )
